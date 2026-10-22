@@ -5,7 +5,9 @@
 [![Serverless](https://img.shields.io/badge/Serverless-Vercel%20%2F%20Netlify-black?style=for-the-badge&logo=vercel)](https://vercel.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-A full-featured digital membership platform and searchable member directory developed for the **Bangladesh Sustainable and Renewable Energy Association (BSREA)**. Enables seamless corporate, associate, and institutional member onboarding, digital profile management, annual subscription renewal tracking, and public member verification.
+An enterprise institutional membership platform and corporate directory hub developed for the **Bangladesh Sustainable and Renewable Energy Association (BSREA)**. Enables corporate member onboarding, multi-facet sector categorization, annual renewal tracking, detailed corporate dossiers, and public member verification.
+
+Engineered with an **Executive Ivory & British Racing Green / Sovereign Gold Design System**, dual Card Grid vs Table Ledger view switcher, and interactive company profile dossiers.
 
 Developed by **MD. Mahamudul Hasan**.
 
@@ -22,19 +24,22 @@ Developed by **MD. Mahamudul Hasan**.
 
 ## 🌟 Key Features
 
-1. **Digital Member Directory**: Interactive searchable and filterable directory categorized by renewable sectors (Solar Energy, Wind Energy, Biomass & Biofuel, Energy Efficiency, Hydro & Microgrid).
-2. **Online Membership Registration**: Multi-step application workflow for Corporate, Associate, and Institutional members with automated ID assignment (`BSREA-CORP-XXX`).
-3. **Dual Cloud & Relational Database**:
+1. **Dual Directory Display Engine**:
+   - **Executive Cards Grid**: Visual company cards featuring corporate initial crests, sector tags, executive contacts, and direct dossier triggers.
+   - **Enterprise Ledger Table**: Dense tabular data view with instant sorting, status indicators, and column filters.
+2. **Executive Industry KPI Metrics**: High-level telemetry displaying registered enterprises (148), cumulative capacity (2,450 MW), sector capitalization ($1.45B), and regulatory compliance (100%).
+3. **Interactive Corporate Dossier**: Comprehensive corporate profile modal showcasing executive board leadership, NBR tax BIN verification, registered renewable project portfolio, and accreditation records.
+4. **Multi-Dimensional Filter & Search**: Instant filtering by Renewable Sector, Membership Class (Corporate, Associate, Institutional), District/Region, and real-time text query.
+5. **Secretariat Backoffice Console (`admin.html`)**: Complete administrative CRM for reviewing new member applications, approving/suspending memberships, and managing renewal terms.
+6. **Dual Cloud & Relational Database**:
    - **MongoDB Atlas Cloud**: Document store hosting member profiles, renewable classifications, and subscription timestamps.
    - **MySQL / MariaDB**: Relational schema with index optimizations on membership codes, status, and fee tracking.
-4. **Member Verification & Status Checking**: Real-time status lookup (Active, Pending, Expired) with instant digital membership certificate preview.
-5. **Admin Analytics Dashboard**: Statistical overview of members by renewable sector, fee collection status, and membership renewal deadlines.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: HTML5 Semantic markup, Vanilla CSS3 (Custom Emerald Renewable Design System), JavaScript (ES6+).
+- **Frontend**: HTML5 Semantic markup, Executive Ivory & British Racing Green CSS3, Typography (`Cinzel` & `Plus Jakarta Sans`), JavaScript (ES6+).
 - **Cloud Database**: MongoDB Atlas (Cloud Cluster, Global IP `0.0.0.0/0`, authenticated connection).
 - **Relational Backend**: PHP 8.2 (RESTful JSON APIs, PDO secure parameterized statements, MySQL/MariaDB).
 - **Serverless Runtime**: Node.js 20+ on Vercel / Netlify Serverless Functions (`api/*.js`).
