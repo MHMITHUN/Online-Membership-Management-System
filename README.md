@@ -7,7 +7,7 @@
 
 A full-featured digital membership platform and searchable member directory developed for the **Bangladesh Sustainable and Renewable Energy Association (BSREA)**. Enables seamless corporate, associate, and institutional member onboarding, digital profile management, annual subscription renewal tracking, and public member verification.
 
-Developed by **MD. Mahamudul Hasan** (IT Officer Candidate).
+Developed by **MD. Mahamudul Hasan**.
 
 ---
 
@@ -108,9 +108,9 @@ Online_Membership_Management_System/
 
 ---
 
-## 👨‍💻 Candidate Information
+## 👨‍💻 Author & Maintainer
 
-- **Name**: MD. Mahamudul Hasan (Mithun)
-- **Role**: IT Officer Candidate, BSREA
+- **Developer**: MD. Mahamudul Hasan (Mithun)
 - **GitHub**: [github.com/MHMITHUN](https://github.com/MHMITHUN)
+- **LinkedIn**: [linkedin.com/in/mahamudul0](https://linkedin.com/in/mahamudul0)
 - **Email**: mhmmithun1@gmail.com
