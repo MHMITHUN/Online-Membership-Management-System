@@ -126,6 +126,7 @@ main { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
 }
 .status-pill.active { background: #d1fae5; color: #065f46; }
 .status-pill.pending { background: #fef3c7; color: #92400e; }
+.status-pill.suspended { background: #fee2e2; color: #991b1b; }
 
 .org-title { font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-top: 0.75rem; }
 .sector-tag { font-size: 0.8rem; font-family: var(--font-mono); color: var(--primary); font-weight: 600; margin-top: 0.2rem; }

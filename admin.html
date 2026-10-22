@@ -24,7 +24,7 @@
       <div class="nav-links">
         <a href="index.html" class="nav-link">Public Directory</a>
         <a href="admin.html" class="nav-link active">Admin Dashboard</a>
-        <a href="../Digital_NOC_QR_Verification_Portal/index.html" class="btn btn-secondary">
+        <a href="https://mhmithun.github.io/Digital-NOC-QR-Verification-Portal/" class="btn btn-secondary" target="_blank" rel="noopener">
           <span>QR Verification Portal ↗</span>
         </a>
       </div>
@@ -85,8 +85,104 @@
     </section>
   </main>
 
+  <!-- Member Management Modal -->
+  <div id="manageModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--primary-dark);">
+          Manage Member Record: <span id="mngCode" style="font-family: var(--font-mono); color: var(--primary);"></span>
+        </h3>
+        <button type="button" onclick="closeManageModal()" style="border: none; background: none; font-size: 1.35rem; cursor: pointer; color: var(--ink-secondary); line-height: 1;">&times;</button>
+      </div>
+      <form id="manageForm">
+        <input type="hidden" id="mngId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="mngName">Company / Organization Name</label>
+            <input type="text" id="mngName" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-group">
+              <label for="mngSector">Renewable Sector</label>
+              <select id="mngSector">
+                <option value="Solar Energy">Solar Energy</option>
+                <option value="Wind Energy">Wind Energy</option>
+                <option value="Biomass & Biofuel">Biomass & Biofuel</option>
+                <option value="Energy Efficiency">Energy Efficiency</option>
+                <option value="Hydro & Microgrid">Hydro & Microgrid</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mngTier">Membership Tier</label>
+              <select id="mngTier">
+                <option value="Corporate Member">Corporate Member</option>
+                <option value="Associate Member">Associate Member</option>
+                <option value="Institutional Member">Institutional Member</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-group">
+              <label for="mngPerson">Authorized Representative</label>
+              <input type="text" id="mngPerson" required>
+            </div>
+            <div class="form-group">
+              <label for="mngDesig">Designation</label>
+              <input type="text" id="mngDesig">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-group">
+              <label for="mngEmail">Email</label>
+              <input type="email" id="mngEmail" required>
+            </div>
+            <div class="form-group">
+              <label for="mngPhone">Phone</label>
+              <input type="text" id="mngPhone" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="mngAddress">Office Address</label>
+            <input type="text" id="mngAddress">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; background: #f0fdf4; padding: 0.75rem; border-radius: 6px; border: 1px solid #bbf7d0;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="mngStatus" style="color: var(--primary-dark); font-weight: 700;">Status</label>
+              <select id="mngStatus" style="font-weight: 600;">
+                <option value="Active">Active</option>
+                <option value="Pending Approval">Pending Approval</option>
+                <option value="Suspended">Suspended</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="mngFee" style="color: var(--primary-dark); font-weight: 700;">Subscription Fee</label>
+              <select id="mngFee" style="font-weight: 600;">
+                <option value="Paid">Paid</option>
+                <option value="Due">Due</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="mngRenewal" style="color: var(--primary-dark); font-weight: 700;">Renewal Date</label>
+              <input type="date" id="mngRenewal" style="font-weight: 600;">
+            </div>
+          </div>
+        </div>
+        <div style="padding: 1rem 1.5rem; background: #f9fafb; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary" onclick="deleteMemberRecord()" style="color: #dc2626; border-color: #fca5a5;">
+            Delete Record
+          </button>
+          <div style="display: flex; gap: 0.75rem;">
+            <button type="button" class="btn btn-secondary" onclick="closeManageModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <footer style="margin-top: 4rem; padding: 2rem; text-align: center; font-size: 0.8rem; color: var(--ink-secondary); border-top: 1px solid var(--border); background: #fff;">
-    <p>BSREA Administrative Backoffice &bull; Architecture and Database by <strong>MD. Mahamudul Hasan</strong> (IT Officer Candidate)</p>
+    <p>BSREA Administrative Backoffice &bull; Architecture and Database by <strong>MD. Mahamudul Hasan</strong></p>
+    <p style="margin-top: 0.3rem; font-family: var(--font-mono); font-size: 0.75rem;">Tech Stack: PHP 8.2 &bull; MySQL Relational DB &bull; MongoDB Atlas Cloud &bull; JavaScript ES6+</p>
   </footer>
 
   <script src="js/app.js"></script>
