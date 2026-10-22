@@ -1,51 +1,83 @@
-# Online Membership Management & Digital Directory System
+# BSREA Online Membership Management System & Digital Directory
 
-A web-based organizational membership management platform and public directory designed for the **Bangladesh Sustainable and Renewable Energy Association (BSREA)**.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-emerald?style=for-the-badge&logo=github)](https://mhmithun.github.io/Online-Membership-Management-System/)
+[![Database](https://img.shields.io/badge/Database-MongoDB%20Atlas-forestgreen?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/cloud/atlas)
+[![Serverless](https://img.shields.io/badge/Serverless-Vercel%20%2F%20Netlify-black?style=for-the-badge&logo=vercel)](https://vercel.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+
+A full-featured digital membership platform and searchable member directory developed for the **Bangladesh Sustainable and Renewable Energy Association (BSREA)**. Enables seamless corporate, associate, and institutional member onboarding, digital profile management, annual subscription renewal tracking, and public member verification.
 
 Developed by **MD. Mahamudul Hasan** (IT Officer Candidate).
 
 ---
 
+## 🌐 Live Access & Deployment
+
+- **Public Live Application**: [https://mhmithun.github.io/Online-Membership-Management-System/](https://mhmithun.github.io/Online-Membership-Management-System/)
+- **GitHub Repository**: [https://github.com/MHMITHUN/Online-Membership-Management-System](https://github.com/MHMITHUN/Online-Membership-Management-System)
+- **Production Database**: MongoDB Atlas Dedicated Cluster (`bsrea_portal` database with IP whitelist `0.0.0.0/0`)
+- **Serverless API Ready**: Supports Vercel & Netlify Serverless Node.js runtime (`api/members.js`, `api/register_member.js`)
+
+---
+
 ## 🌟 Key Features
 
-1. **Public Digital Directory**: Fast, responsive member directory searchable by company name, representative, sector, and location.
-2. **Renewable Energy Sector Filtering**: Instant filtering across Bangladesh renewable energy sectors (Solar Energy, Wind Power, Biomass & Biofuel, Energy Efficiency, Hydro & Microgrid).
-3. **Online Member Onboarding**: Digital application form capturing organization details, designated representatives, corporate email, phone, and membership tiers.
-4. **Administrative Backoffice Dashboard**: Administrative control panel for the Secretariat to review pending applications, update membership status (Active, Suspended, Expired), and monitor renewal fees.
-5. **Relational MySQL Database Schema**: Structured tables with foreign key relationships, audit tracking, and automated renewal logs.
+1. **Digital Member Directory**: Interactive searchable and filterable directory categorized by renewable sectors (Solar Energy, Wind Energy, Biomass & Biofuel, Energy Efficiency, Hydro & Microgrid).
+2. **Online Membership Registration**: Multi-step application workflow for Corporate, Associate, and Institutional members with automated ID assignment (`BSREA-CORP-XXX`).
+3. **Dual Cloud & Relational Database**:
+   - **MongoDB Atlas Cloud**: Document store hosting member profiles, renewable classifications, and subscription timestamps.
+   - **MySQL / MariaDB**: Relational schema with index optimizations on membership codes, status, and fee tracking.
+4. **Member Verification & Status Checking**: Real-time status lookup (Active, Pending, Expired) with instant digital membership certificate preview.
+5. **Admin Analytics Dashboard**: Statistical overview of members by renewable sector, fee collection status, and membership renewal deadlines.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: HTML5, Vanilla CSS3 (BSREA Emerald Design System), JavaScript (ES6+).
-- **Backend**: PHP 8.2 (RESTful JSON APIs, PDO secure queries).
-- **Database**: MySQL / MariaDB (`tbl_members`, `tbl_sectors`, `tbl_renewals`).
+- **Frontend**: HTML5 Semantic markup, Vanilla CSS3 (Custom Emerald Renewable Design System), JavaScript (ES6+).
+- **Cloud Database**: MongoDB Atlas (Cloud Cluster, Global IP `0.0.0.0/0`, authenticated connection).
+- **Relational Backend**: PHP 8.2 (RESTful JSON APIs, PDO secure parameterized statements, MySQL/MariaDB).
+- **Serverless Runtime**: Node.js 20+ on Vercel / Netlify Serverless Functions (`api/*.js`).
+- **Security**: Parameterized queries, CSRF token validation, input sanitization.
 
 ---
 
 ## 🚀 How to Run Locally
 
-### Option 1: Standalone Browser Mode (Zero Setup)
-Open `index.html` (Public Directory) or `admin.html` (Administrative Console) directly in any web browser. Features an embedded client-side database engine with full interactive search, filtering, and approval capabilities.
+### Option 1: Live Web / Browser (Zero Setup)
+Visit the live portal at [https://mhmithun.github.io/Online-Membership-Management-System/](https://mhmithun.github.io/Online-Membership-Management-System/) or open `index.html` locally in any browser.
 
-### Option 2: Full PHP & MySQL Setup
+### Option 2: Node.js & MongoDB Atlas Serverless API
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Configure `.env` (copy from `.env.example`):
+   ```env
+   MONGODB_URI=your_mongodb_atlas_connection_string
+   PORT=3000
+   ```
+3. Run the development server:
+   ```bash
+   npm start
+   ```
+
+### Option 3: PHP & MySQL Local Setup
 1. Import `backend/schema.sql` into MySQL:
    ```sql
    mysql -u root -p < backend/schema.sql
    ```
-2. Configure database credentials in `backend/db_connect.php`:
+2. Configure credentials in `backend/db_connect.php`:
    ```php
    $host     = 'localhost';
    $db_name  = 'bsrea_membership_system';
    $username = 'your_username';
    $password = 'your_password';
    ```
-3. Start PHP development server:
+3. Start PHP server:
    ```bash
-   php -S localhost:8080
+   php -S localhost:8000
    ```
-4. Access the portal at `http://localhost:8080/`.
 
 ---
 
@@ -53,32 +85,32 @@ Open `index.html` (Public Directory) or `admin.html` (Administrative Console) di
 
 ```
 Online_Membership_Management_System/
-├── index.html               # Public member directory & application portal
-├── admin.html               # Secretariat backoffice administration console
+├── index.html               # Main directory & membership portal UI
 ├── css/
-│   └── styles.css           # Modern directory and admin dashboard styling
+│   └── styles.css           # Modern BSREA emerald design system
 ├── js/
-│   └── app.js              # Reactive search, category filter, and admin actions
-├── backend/
-│   ├── schema.sql           # Complete MySQL relational database schema
-│   ├── db_connect.php       # PDO database connection
+│   └── app.js              # Frontend logic, directory search, filter & registration
+├── api/                     # Cloud Serverless API (Vercel / Netlify)
+│   ├── db.js                # MongoDB Atlas connection handler
+│   ├── members.js           # /api/members directory query endpoint
+│   └── register_member.js   # /api/register_member endpoint
+├── backend/                 # Relational PHP Backend
+│   ├── schema.sql           # MySQL database schema & seed data
+│   ├── db_connect.php       # Secure PDO database connector
 │   └── api/
-│       ├── members.php      # Member search & query endpoint
-│       └── register.php     # Member onboarding & approval endpoint
-└── README.md                # Documentation and setup instructions
+│       ├── members.php      # PHP members directory endpoint
+│       └── register_member.php # PHP registration endpoint
+├── vercel.json              # Vercel deployment configuration
+├── netlify.toml             # Netlify deployment configuration
+├── package.json             # Node.js dependencies (mongodb driver)
+└── README.md                # Project documentation
 ```
 
 ---
 
-## 🔗 How to Push to GitHub
+## 👨‍💻 Candidate Information
 
-To publish this repository to your GitHub profile (`github.com/MHMITHUN`):
-
-```bash
-git init
-git add .
-git commit -m "feat: initial commit of BSREA Online Membership Management System"
-git branch -M main
-git remote add origin https://github.com/MHMITHUN/Online-Membership-Management-System.git
-git push -u origin main
-```
+- **Name**: MD. Mahamudul Hasan (Mithun)
+- **Role**: IT Officer Candidate, BSREA
+- **GitHub**: [github.com/MHMITHUN](https://github.com/MHMITHUN)
+- **Email**: mhmmithun1@gmail.com
