@@ -3,13 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BSREA Digital Member Directory & Membership Portal</title>
+  <title>BSREA Executive Member Directory & Enterprise Registry</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+  <!-- Institutional Top Bar -->
+  <div class="gov-top-bar">
+    <div>
+      <span>OFFICIAL REGISTRY OF BANGLADESH SUSTAINABLE & RENEWABLE ENERGY ASSOCIATION</span>
+      <span style="margin: 0 0.5rem; opacity: 0.5;">|</span>
+      <span>SECRETARIAT: GULSHAN-2, DHAKA</span>
+    </div>
+    <div>
+      <span>REGULATORY STANDARDS: SREDA & POWER DIVISION COMPLIANT</span>
+      <span style="margin: 0 0.5rem; opacity: 0.5;">|</span>
+      <a href="https://mhmithun.github.io/Digital-NOC-QR-Verification-Portal/" target="_blank" rel="noopener">
+        Security QR Portal ↗
+      </a>
+    </div>
+  </div>
 
   <!-- Header -->
   <header>
@@ -17,17 +32,17 @@
       <div class="brand">
         <div class="brand-emblem">BS</div>
         <div class="brand-text">
-          <h1>BSREA DIGITAL MEMBER DIRECTORY</h1>
-          <p>Bangladesh Sustainable and Renewable Energy Association</p>
+          <h1>BSREA ENTERPRISE DIRECTORY</h1>
+          <p>National Association of Renewable & Clean Energy Developers</p>
         </div>
       </div>
       <div class="nav-links">
-        <a href="index.html" class="nav-link active">Public Directory</a>
-        <a href="admin.html" class="nav-link">Admin Dashboard</a>
+        <a href="index.html" class="nav-link active">Directory Hub</a>
+        <a href="admin.html" class="nav-link">Admin Backoffice</a>
         <a href="https://mhmithun.github.io/Digital-NOC-QR-Verification-Portal/" class="btn btn-secondary" target="_blank" rel="noopener">
-          <span>QR Verification Portal ↗</span>
+          <span>NOC Verification Vault ↗</span>
         </a>
-        <button class="btn btn-primary" onclick="openRegisterModal()">
+        <button class="btn btn-gold" onclick="openRegisterModal()">
           <span>+ Apply for Membership</span>
         </button>
       </div>
@@ -36,107 +51,238 @@
 
   <!-- Main Content -->
   <main>
+    <!-- Institutional Hero Banner -->
     <section class="directory-hero">
-      <h2>National Renewable Energy Industry Directory</h2>
+      <div class="hero-crest-badge">
+        <span>✦ APEX TRADE BODY REGISTRY</span>
+        <span>&bull;</span>
+        <span>ESTABLISHED 2014</span>
+      </div>
+      <h2>National Renewable Energy Corporate Directory & Registry</h2>
       <p>
-        Official searchable directory of renewable energy developers, manufacturers, EPC contractors, and service providers registered under BSREA.
+        The central institutional registry of accredited renewable energy developers, EPC contractors, equipment manufacturers, and green energy technology providers operating across the People's Republic of Bangladesh.
       </p>
     </section>
 
-    <!-- Filter & Search Card -->
+    <!-- Executive Metrics Strip (4 Institutional KPIs) -->
+    <section class="kpi-grid">
+      <div class="kpi-card gold-card">
+        <div class="kpi-label">Registered Enterprises</div>
+        <div class="kpi-value">148</div>
+        <div class="kpi-sub">Corporate & Associate Members</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Cumulative Power Portfolio</div>
+        <div class="kpi-value">2,450 <span style="font-size: 1.1rem; font-weight: 500;">MW</span></div>
+        <div class="kpi-sub">Solar, Wind, Biomass & Hydro</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Capital Investment</div>
+        <div class="kpi-value">$1.45 <span style="font-size: 1.1rem; font-weight: 500;">B</span></div>
+        <div class="kpi-sub">Infrastructure & Clean Tech Assets</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Governance Index</div>
+        <div class="kpi-value">100%</div>
+        <div class="kpi-sub">BSREA Regulatory KYC Compliance</div>
+      </div>
+    </section>
+
+    <!-- Multi-Facet Filter & Options Bar -->
     <section class="filter-card">
-      <div class="search-row">
-        <input 
-          type="text" 
-          id="searchInput" 
-          class="search-input" 
-          placeholder="Search member company, representative, membership ID, or location..."
-        >
-        <span id="resultCount" style="align-self: center; font-size: 0.8rem; font-family: var(--font-mono); color: var(--ink-secondary);">
-          Showing 6 Active Members
+      <div class="filter-top-row">
+        <!-- Search Input -->
+        <div class="search-input-group">
+          <span class="search-icon-badge">🔍</span>
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Search enterprise name, representative, member code, or district..."
+          >
+        </div>
+
+        <!-- View Mode Switcher -->
+        <div class="view-mode-toggle">
+          <button type="button" class="view-btn active" id="btnViewGrid" onclick="switchDirectoryView('grid')">
+            <span>⊞ Cards View</span>
+          </button>
+          <button type="button" class="view-btn" id="btnViewList" onclick="switchDirectoryView('list')">
+            <span>☰ Enterprise Ledger</span>
+          </button>
+        </div>
+
+        <!-- Result Count -->
+        <span id="resultCount" style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">
+          Showing 6 Active Member Entities
         </span>
+      </div>
+
+      <!-- Advanced Filters Row -->
+      <div class="filter-dropdown-row">
+        <label style="font-size: 0.78rem; font-weight: 700; color: var(--ink-secondary);">Filter By:</label>
+        
+        <select id="filterTier" class="filter-select" onchange="handleFilterChange()">
+          <option value="All">All Membership Classes</option>
+          <option value="Corporate Member">Corporate Member</option>
+          <option value="Associate Member">Associate Member</option>
+          <option value="Institutional Member">Institutional Member</option>
+        </select>
+
+        <select id="filterRegion" class="filter-select" onchange="handleFilterChange()">
+          <option value="All">All Regions / Districts</option>
+          <option value="Dhaka">Dhaka Division</option>
+          <option value="Chittagong">Chittagong Division</option>
+          <option value="Sylhet">Sylhet Division</option>
+          <option value="Khulna">Khulna Division</option>
+          <option value="Rajshahi">Rajshahi Division</option>
+        </select>
+
+        <select id="filterSort" class="filter-select" onchange="handleFilterChange()">
+          <option value="name">Sort: Company Name (A-Z)</option>
+          <option value="code">Sort: Member ID Code</option>
+          <option value="date">Sort: Registration Date</option>
+        </select>
       </div>
 
       <!-- Sector Pills -->
       <div class="sector-pills">
         <button class="sector-btn active" data-sector="All">All Sectors</button>
-        <button class="sector-btn" data-sector="Solar Energy">Solar Energy (PV / Rooftop)</button>
+        <button class="sector-btn" data-sector="Solar Energy">Solar Energy (PV / Rooftop / Utility)</button>
         <button class="sector-btn" data-sector="Wind Energy">Wind Energy</button>
         <button class="sector-btn" data-sector="Biomass & Biofuel">Biomass & Biofuel</button>
-        <button class="sector-btn" data-sector="Energy Efficiency">Energy Efficiency</button>
-        <button class="sector-btn" data-sector="Hydro & Microgrid">Hydro & Microgrid</button>
+        <button class="sector-btn" data-sector="Energy Efficiency">Energy Efficiency & Storage</button>
+        <button class="sector-btn" data-sector="Hydro & Microgrid">Hydro & Microgrid Systems</button>
       </div>
     </section>
 
-    <!-- Members Grid -->
+    <!-- Display Mode 1: Executive Cards Grid -->
     <section id="membersGrid" class="members-grid">
       <!-- Populated dynamically by app.js -->
     </section>
+
+    <!-- Display Mode 2: Enterprise Ledger Table -->
+    <section id="tableViewContainer" class="table-view-container">
+      <div style="overflow-x: auto;">
+        <table class="enterprise-table">
+          <thead>
+            <tr>
+              <th>Member Code</th>
+              <th>Enterprise Organization</th>
+              <th>Sector</th>
+              <th>Membership Class</th>
+              <th>Executive Head</th>
+              <th>Location</th>
+              <th>Verification</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Populated dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
+
+  <!-- Dossier Modal (View Full Enterprise Profile) -->
+  <div id="dossierModal" class="modal-backdrop">
+    <div class="modal-card dossier-card">
+      <div class="modal-header">
+        <h3 id="dossierTitle">Corporate Member Dossier</h3>
+        <button type="button" class="modal-header-close" onclick="closeDossierModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="dossierBody">
+        <!-- Populated dynamically -->
+      </div>
+      <div style="padding: 1.25rem 1.75rem; background: var(--bg-subtle); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.75rem; color: var(--ink-secondary); font-family: var(--font-mono);">
+          BSREA Registry Record &bull; Official Digital Seal
+        </span>
+        <button type="button" class="btn btn-primary" onclick="closeDossierModal()">Close Dossier</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Registration Modal -->
   <div id="regModal" class="modal-backdrop">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--primary-dark);">Apply for BSREA Membership</h3>
-        <button type="button" onclick="closeRegisterModal()" style="border: none; background: none; font-size: 1.25rem; cursor: pointer; color: var(--ink-secondary);">&times;</button>
+        <h3>Apply for BSREA Corporate Membership</h3>
+        <button type="button" class="modal-header-close" onclick="closeRegisterModal()">&times;</button>
       </div>
       <form id="regForm">
         <div class="modal-body">
           <div class="form-group">
-            <label for="regOrg">Company / Organization Name *</label>
+            <label for="regOrg">Company / Legal Entity Registered Name *</label>
             <input type="text" id="regOrg" placeholder="e.g. Bengal Green Energy Ltd." required>
           </div>
-          <div class="form-group">
-            <label for="regType">Membership Tier *</label>
-            <select id="regType">
-              <option value="Corporate Member">Corporate Member</option>
-              <option value="Associate Member">Associate Member</option>
-              <option value="Institutional Member">Institutional Member</option>
-            </select>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="regType">Membership Tier *</label>
+              <select id="regType">
+                <option value="Corporate Member">Corporate Member</option>
+                <option value="Associate Member">Associate Member</option>
+                <option value="Institutional Member">Institutional Member</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="regSector">Renewable Sector *</label>
+              <select id="regSector">
+                <option value="Solar Energy">Solar Energy</option>
+                <option value="Wind Energy">Wind Energy</option>
+                <option value="Biomass & Biofuel">Biomass & Biofuel</option>
+                <option value="Energy Efficiency">Energy Efficiency</option>
+                <option value="Hydro & Microgrid">Hydro & Microgrid</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="regPerson">Authorized Representative Name *</label>
+              <input type="text" id="regPerson" placeholder="e.g. Tanvir Hossain" required>
+            </div>
+            <div class="form-group">
+              <label for="regDesig">Official Designation</label>
+              <input type="text" id="regDesig" placeholder="e.g. Managing Director">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="regEmail">Corporate Email Address *</label>
+              <input type="email" id="regEmail" placeholder="e.g. corporate@company.com" required>
+            </div>
+            <div class="form-group">
+              <label for="regPhone">Official Phone Number *</label>
+              <input type="tel" id="regPhone" placeholder="e.g. +880 1711 000000" required>
+            </div>
           </div>
           <div class="form-group">
-            <label for="regSector">Renewable Sector *</label>
-            <select id="regSector">
-              <option value="Solar Energy">Solar Energy</option>
-              <option value="Wind Energy">Wind Energy</option>
-              <option value="Biomass & Biofuel">Biomass & Biofuel</option>
-              <option value="Energy Efficiency">Energy Efficiency</option>
-              <option value="Hydro & Microgrid">Hydro & Microgrid</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="regPerson">Authorized Representative Name *</label>
-            <input type="text" id="regPerson" placeholder="e.g. Tanvir Hossain" required>
-          </div>
-          <div class="form-group">
-            <label for="regDesig">Designation</label>
-            <input type="text" id="regDesig" placeholder="e.g. Managing Director">
-          </div>
-          <div class="form-group">
-            <label for="regEmail">Corporate Email *</label>
-            <input type="email" id="regEmail" placeholder="e.g. info@company.com" required>
-          </div>
-          <div class="form-group">
-            <label for="regPhone">Contact Phone *</label>
-            <input type="tel" id="regPhone" placeholder="e.g. +880 1711 000000" required>
-          </div>
-          <div class="form-group">
-            <label for="regAddress">Registered Office Address</label>
-            <textarea id="regAddress" rows="2" placeholder="e.g. House-12, Road-5, Gulshan-2, Dhaka"></textarea>
+            <label for="regAddress">Registered Headquarters Address</label>
+            <textarea id="regAddress" rows="2" placeholder="e.g. House-12, Road-5, Gulshan-2, Dhaka-1212"></textarea>
           </div>
         </div>
-        <div style="padding: 1rem 1.5rem; background: #f9fafb; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <div style="padding: 1.25rem 1.75rem; background: var(--bg-subtle); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.75rem;">
           <button type="button" class="btn btn-secondary" onclick="closeRegisterModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Submit Application</button>
+          <button type="submit" class="btn btn-gold">Submit Enterprise Application</button>
         </div>
       </form>
     </div>
   </div>
 
-  <footer style="margin-top: 4rem; padding: 2rem; text-align: center; font-size: 0.8rem; color: var(--ink-secondary); border-top: 1px solid var(--border); background: #fff;">
-    <p>BSREA Online Membership Management System &bull; Developed by <strong>MD. Mahamudul Hasan</strong></p>
-    <p style="margin-top: 0.3rem; font-family: var(--font-mono); font-size: 0.75rem;">Tech Stack: PHP 8.2 &bull; MySQL Relational DB &bull; MongoDB Atlas Cloud &bull; JavaScript ES6+</p>
+  <!-- Footer -->
+  <footer>
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
+      <div style="font-family: var(--font-serif); font-size: 1rem; color: var(--primary); font-weight: 700;">
+        BANGLADESH SUSTAINABLE AND RENEWABLE ENERGY ASSOCIATION
+      </div>
+      <p>
+        BSREA Online Membership Management System &bull; Designed & Engineered by <strong>MD. Mahamudul Hasan</strong>
+      </p>
+      <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-muted);">
+        Enterprise Stack: PHP 8.2 Backoffice &bull; MySQL Relational Schema &bull; MongoDB Atlas Cloud Cluster &bull; ES6+ Enterprise UI
+      </p>
+    </div>
   </footer>
 
   <script src="js/app.js"></script>

@@ -1,6 +1,6 @@
 /**
- * BSREA Online Membership Management System
- * Frontend Application & Administrative Backoffice Engine
+ * BSREA Online Membership Management System & Corporate Registry
+ * Executive Frontend Logic & Administrative CRM Engine
  * Author: MD. Mahamudul Hasan
  */
 
@@ -13,15 +13,19 @@ const defaultMembers = [
     name: 'Rahimafrooz Renewable Energy Ltd.',
     type: 'Corporate Member',
     sector: 'Solar Energy',
+    region: 'Dhaka',
+    capacity: '120 MW Solar EPC Portfolio',
+    tinBin: 'BIN-000192837-0101',
     person: 'Engr. M. Rahman',
     designation: 'Director, Technical',
     email: 'info@rahimafrooz-renewable.com',
     phone: '+880 1711 000111',
-    address: 'Arzed Chamber, Mohakhali / Gulshan, Dhaka',
+    address: 'Arzed Chamber, Mohakhali / Gulshan-2, Dhaka',
     registered: '2022-01-15',
     renewal: '2027-01-14',
     feeStatus: 'Paid',
-    status: 'Active'
+    status: 'Active',
+    projects: '50MW Feni Solar Park, 12MW Gazipur Industrial Rooftop'
   },
   {
     id: 2,
@@ -29,6 +33,9 @@ const defaultMembers = [
     name: 'Solaric Bangladesh Limited',
     type: 'Corporate Member',
     sector: 'Solar Energy',
+    region: 'Dhaka',
+    capacity: '85 MW C&I Rooftop Systems',
+    tinBin: 'BIN-000284912-0202',
     person: 'Tanvir Hossain',
     designation: 'Managing Director',
     email: 'support@solaricbd.com',
@@ -37,7 +44,8 @@ const defaultMembers = [
     registered: '2023-03-20',
     renewal: '2027-03-19',
     feeStatus: 'Paid',
-    status: 'Active'
+    status: 'Active',
+    projects: '60+ RMG Factory Solar Rooftops across Narayanganj and Savar'
   },
   {
     id: 3,
@@ -45,15 +53,19 @@ const defaultMembers = [
     name: 'Green Energy Engineering BD',
     type: 'Associate Member',
     sector: 'Wind Energy',
+    region: 'Chittagong',
+    capacity: '30 MW Wind Turbine Projects',
+    tinBin: 'BIN-000391024-0303',
     person: 'Engr. Kamal Uddin',
     designation: 'Head of Operations',
     email: 'contact@greenenergybd.org',
     phone: '+880 1819 444555',
-    address: 'Sector-4, Uttara, Dhaka',
+    address: 'Agrabad C/A, Chittagong',
     registered: '2024-02-10',
     renewal: '2027-02-09',
     feeStatus: 'Paid',
-    status: 'Active'
+    status: 'Active',
+    projects: 'Cox\'s Bazar Wind Farm Assessment & Offshore Met Mast'
   },
   {
     id: 4,
@@ -61,15 +73,19 @@ const defaultMembers = [
     name: 'Desh BioPower Systems PLC',
     type: 'Corporate Member',
     sector: 'Biomass & Biofuel',
+    region: 'Rajshahi',
+    capacity: '15 MW Agricultural Biomass Plant',
+    tinBin: 'BIN-000481928-0404',
     person: 'Dr. M. A. Karim',
     designation: 'Chief Energy Officer',
     email: 'biopower@deshenergy.com',
     phone: '+880 1713 555666',
-    address: 'Tejgaon I/A, Dhaka',
+    address: 'BSCIC Industrial Area, Rajshahi',
     registered: '2023-07-01',
     renewal: '2027-06-30',
     feeStatus: 'Paid',
-    status: 'Active'
+    status: 'Active',
+    projects: 'Rice Husk Gasification & Municipal Biogas Facilities'
   },
   {
     id: 5,
@@ -77,6 +93,9 @@ const defaultMembers = [
     name: 'EcoEfficiency Solutions Ltd.',
     type: 'Institutional Member',
     sector: 'Energy Efficiency',
+    region: 'Dhaka',
+    capacity: '45 Industrial Energy Audits',
+    tinBin: 'BIN-000592813-0505',
     person: 'S. M. Chowdhury',
     designation: 'Senior Consultant',
     email: 'info@ecoefficientbd.net',
@@ -85,7 +104,8 @@ const defaultMembers = [
     registered: '2025-01-10',
     renewal: '2027-01-09',
     feeStatus: 'Paid',
-    status: 'Active'
+    status: 'Active',
+    projects: 'National Energy Efficiency & BESS Peak-Shaving Program'
   },
   {
     id: 6,
@@ -93,15 +113,19 @@ const defaultMembers = [
     name: 'Bengal Hydro & Microgrid Ltd.',
     type: 'Associate Member',
     sector: 'Hydro & Microgrid',
+    region: 'Sylhet',
+    capacity: '8.5 MW Micro-Hydro & Islanded Grids',
+    tinBin: 'BIN-000673910-0606',
     person: 'Nasir Ahmed',
     designation: 'Project Director',
     email: 'hello@bengalhydro.com',
     phone: '+880 1610 999000',
-    address: 'Mirpur DOHS, Dhaka',
+    address: 'Subidbazar, Sylhet',
     registered: '2025-05-18',
     renewal: '2027-05-17',
     feeStatus: 'Paid',
-    status: 'Active'
+    status: 'Active',
+    projects: 'Sylhet Hill Micro-Hydro & Sandwip Solar-Diesel Hybrid'
   }
 ];
 
@@ -132,61 +156,275 @@ function saveMembers(data) {
 let membersData = loadMembers();
 let currentSector = 'All';
 let currentSearch = '';
+let currentTier = 'All';
+let currentRegion = 'All';
+let currentSort = 'name';
+let currentViewMode = 'grid'; // 'grid' or 'list'
 
-// Function: Render Public Members Directory
-function renderDirectory() {
-  const container = document.getElementById('membersGrid');
-  if (!container) return;
+// Get company monogram (first letters of words)
+function getCompanyInitials(name) {
+  const words = name.replace(/Ltd\.|Limited|PLC|LLC|Inc\./gi, '').trim().split(/\s+/);
+  if (words.length >= 2) {
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+  return name.substring(0, 2).toUpperCase();
+}
 
+// Get tier pill class
+function getTierClass(type) {
+  if (type.includes('Corporate')) return 'tier-corporate';
+  if (type.includes('Associate')) return 'tier-associate';
+  return 'tier-institutional';
+}
+
+// Switch Directory View Mode (Grid vs List)
+function switchDirectoryView(mode) {
+  currentViewMode = mode;
+  const btnGrid = document.getElementById('btnViewGrid');
+  const btnList = document.getElementById('btnViewList');
+  const gridSection = document.getElementById('membersGrid');
+  const listSection = document.getElementById('tableViewContainer');
+
+  if (mode === 'list') {
+    if (btnGrid) btnGrid.classList.remove('active');
+    if (btnList) btnList.classList.add('active');
+    if (gridSection) gridSection.style.display = 'none';
+    if (listSection) listSection.classList.add('active');
+  } else {
+    if (btnList) btnList.classList.remove('active');
+    if (btnGrid) btnGrid.classList.add('active');
+    if (listSection) listSection.classList.remove('active');
+    if (gridSection) gridSection.style.display = 'grid';
+  }
+  renderDirectory();
+}
+
+// Handler for filter dropdown change
+function handleFilterChange() {
+  const tierSelect = document.getElementById('filterTier');
+  const regionSelect = document.getElementById('filterRegion');
+  const sortSelect = document.getElementById('filterSort');
+
+  if (tierSelect) currentTier = tierSelect.value;
+  if (regionSelect) currentRegion = regionSelect.value;
+  if (sortSelect) currentSort = sortSelect.value;
+
+  renderDirectory();
+}
+
+// Filter and Sort active members
+function getFilteredAndSortedMembers() {
   const activeMembers = membersData.filter(m => m.status === 'Active');
 
-  const filtered = activeMembers.filter(m => {
+  let result = activeMembers.filter(m => {
+    // Sector filter
     const matchSector = currentSector === 'All' || m.sector === currentSector;
-    const matchSearch = (m.name || '').toLowerCase().includes(currentSearch.toLowerCase()) ||
-                        (m.code || '').toLowerCase().includes(currentSearch.toLowerCase()) ||
-                        (m.address || '').toLowerCase().includes(currentSearch.toLowerCase()) ||
-                        (m.person || '').toLowerCase().includes(currentSearch.toLowerCase());
-    return matchSector && matchSearch;
+    // Tier filter
+    const matchTier = currentTier === 'All' || m.type === currentTier;
+    // Region filter
+    const matchRegion = currentRegion === 'All' || 
+                        (m.region && m.region.toLowerCase().includes(currentRegion.toLowerCase())) ||
+                        (m.address && m.address.toLowerCase().includes(currentRegion.toLowerCase()));
+    // Search query
+    const s = currentSearch.toLowerCase();
+    const matchSearch = !s ||
+                        (m.name || '').toLowerCase().includes(s) ||
+                        (m.code || '').toLowerCase().includes(s) ||
+                        (m.address || '').toLowerCase().includes(s) ||
+                        (m.person || '').toLowerCase().includes(s);
+
+    return matchSector && matchTier && matchRegion && matchSearch;
   });
+
+  // Sorting
+  result.sort((a, b) => {
+    if (currentSort === 'name') {
+      return (a.name || '').localeCompare(b.name || '');
+    } else if (currentSort === 'code') {
+      return (a.code || '').localeCompare(b.code || '');
+    } else if (currentSort === 'date') {
+      return (b.registered || '').localeCompare(a.registered || '');
+    }
+    return 0;
+  });
+
+  return result;
+}
+
+// Function: Render Public Members Directory (Supports Grid & List View)
+function renderDirectory() {
+  const gridContainer = document.getElementById('membersGrid');
+  const tableBody = document.getElementById('tableBody');
+  if (!gridContainer && !tableBody) return;
+
+  const filtered = getFilteredAndSortedMembers();
+  const totalActive = membersData.filter(m => m.status === 'Active').length;
 
   const countBadge = document.getElementById('resultCount');
   if (countBadge) {
-    countBadge.textContent = `Showing ${filtered.length} of ${activeMembers.length} Active Members`;
+    countBadge.textContent = `Showing ${filtered.length} of ${totalActive} Active Member Entities`;
   }
 
-  if (filtered.length === 0) {
-    container.innerHTML = `
-      <div style="grid-column: 1/-1; padding: 3rem; text-align: center; background: #fff; border-radius: 8px; border: 1px solid var(--border);">
-        <p style="font-size: 0.95rem; color: var(--ink-secondary);">No active member organizations match your search filters.</p>
-      </div>
-    `;
-    return;
+  // 1. Render Grid View
+  if (gridContainer) {
+    if (filtered.length === 0) {
+      gridContainer.innerHTML = `
+        <div style="grid-column: 1/-1; padding: 3.5rem 2rem; text-align: center; background: #fff; border-radius: 12px; border: 1px solid var(--border);">
+          <div style="font-size: 2rem; color: var(--ink-muted); margin-bottom: 0.5rem;">🏢</div>
+          <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--primary);">No Member Entities Found</h4>
+          <p style="font-size: 0.88rem; color: var(--ink-secondary); margin-top: 0.35rem;">No registered enterprises match your selected filter criteria. Try adjusting your search query or reset sector filters.</p>
+        </div>
+      `;
+    } else {
+      gridContainer.innerHTML = filtered.map(m => `
+        <div class="member-card">
+          <div>
+            <div class="card-top">
+              <span class="member-code">${m.code}</span>
+              <span class="tier-badge ${getTierClass(m.type)}">${m.type}</span>
+            </div>
+
+            <div class="company-avatar-box">
+              <div class="company-crest">${getCompanyInitials(m.name)}</div>
+              <div>
+                <h4 class="org-title">${m.name}</h4>
+                <div class="sector-tag">⚡ ${m.sector}</div>
+              </div>
+            </div>
+
+            <div class="card-details">
+              <div><strong>Lead Representative:</strong> ${m.person} (${m.designation || 'Director'})</div>
+              <div><strong>Location:</strong> ${m.address || 'Dhaka, Bangladesh'}</div>
+              <div><strong>Corporate Email:</strong> ${m.email}</div>
+              <div><strong>Telephone:</strong> ${m.phone}</div>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--ink-secondary);">
+              Renewal: <strong>${m.renewal || '2027-12-31'}</strong>
+            </span>
+            <button type="button" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.78rem;" onclick="openDossierModal(${m.id})">
+              <span>View Dossier ↗</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
   }
 
-  container.innerHTML = filtered.map(m => `
-    <div class="member-card">
+  // 2. Render Table View
+  if (tableBody) {
+    if (filtered.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: var(--ink-secondary);">No member enterprises found matching your filter selection.</td></tr>`;
+    } else {
+      tableBody.innerHTML = filtered.map(m => `
+        <tr>
+          <td style="font-family: var(--font-mono); font-weight: 700; color: var(--primary); white-space: nowrap;">${m.code}</td>
+          <td>
+            <div style="font-weight: 700; color: var(--primary-dark);">${m.name}</div>
+            <div style="font-size: 0.75rem; color: var(--ink-muted);">${m.tinBin || 'BIN Verified'}</div>
+          </td>
+          <td><span style="font-weight: 600; color: var(--primary); font-size: 0.8rem;">${m.sector}</span></td>
+          <td><span class="tier-badge ${getTierClass(m.type)}">${m.type}</span></td>
+          <td>
+            <div style="font-weight: 600;">${m.person}</div>
+            <div style="font-size: 0.75rem; color: var(--ink-muted);">${m.designation || 'Representative'}</div>
+          </td>
+          <td style="font-size: 0.8rem; color: var(--ink-secondary);">${m.region || 'Dhaka'}</td>
+          <td><span class="status-pill active">● Verified</span></td>
+          <td>
+            <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="openDossierModal(${m.id})">
+              Dossier
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+  }
+}
+
+// Function: Open Member Corporate Dossier Modal
+function openDossierModal(id) {
+  const member = membersData.find(m => m.id === id);
+  if (!member) return;
+
+  const modal = document.getElementById('dossierModal');
+  const title = document.getElementById('dossierTitle');
+  const body = document.getElementById('dossierBody');
+  if (!modal || !body) return;
+
+  if (title) title.textContent = `Corporate Dossier: ${member.name}`;
+
+  body.innerHTML = `
+    <div class="dossier-header-strip">
+      <div class="dossier-crest">${getCompanyInitials(member.name)}</div>
       <div>
-        <div class="card-top">
-          <span class="member-code">${m.code}</span>
-          <span class="status-pill active">● ${m.status}</span>
+        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 4px;">
+          <span class="member-code">${member.code}</span>
+          <span class="tier-badge ${getTierClass(member.type)}">${member.type}</span>
+          <span class="status-pill active">● Active Member</span>
         </div>
-        <h4 class="org-title">${m.name}</h4>
-        <p class="sector-tag">⚡ ${m.sector}</p>
-        
-        <div class="card-details">
-          <div><strong style="color: var(--ink);">Type:</strong> ${m.type}</div>
-          <div><strong style="color: var(--ink);">Representative:</strong> ${m.person} (${m.designation || 'Representative'})</div>
-          <div><strong style="color: var(--ink);">Location:</strong> ${m.address || 'Dhaka, Bangladesh'}</div>
-          <div><strong style="color: var(--ink);">Contact:</strong> ${m.email} &bull; ${m.phone}</div>
-        </div>
-      </div>
-
-      <div style="margin-top: 1.25rem; padding-top: 0.75rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-family: var(--font-mono); color: var(--ink-secondary);">
-        <span>Renewal: ${m.renewal || '2027-12-31'}</span>
-        <span style="color: var(--primary); font-weight: 600;">BSREA Verified ✓</span>
+        <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--primary);">${member.name}</h3>
+        <p style="font-size: 0.82rem; color: var(--ink-secondary); margin-top: 2px;">
+          Renewable Energy Sector: <strong style="color: var(--primary);">${member.sector}</strong>
+        </p>
       </div>
     </div>
-  `).join('');
+
+    <div class="dossier-meta-grid">
+      <div class="dossier-box">
+        <div class="dossier-box-label">Lead Executive / Authorized Head</div>
+        <div class="dossier-box-val">${member.person}</div>
+        <div style="font-size: 0.75rem; color: var(--ink-muted);">${member.designation || 'Managing Director'}</div>
+      </div>
+
+      <div class="dossier-box">
+        <div class="dossier-box-label">National Tax / BIN Reference</div>
+        <div class="dossier-box-val" style="font-family: var(--font-mono);">${member.tinBin || 'BIN-003892182-0101'}</div>
+        <div style="font-size: 0.75rem; color: var(--pass);">NBR Tax Compliance Clear</div>
+      </div>
+
+      <div class="dossier-box">
+        <div class="dossier-box-label">Registered Corporate Headquarters</div>
+        <div class="dossier-box-val">${member.address || 'Dhaka, Bangladesh'}</div>
+        <div style="font-size: 0.75rem; color: var(--ink-muted);">Region: ${member.region || 'Dhaka Division'}</div>
+      </div>
+
+      <div class="dossier-box">
+        <div class="dossier-box-label">Direct Institutional Contacts</div>
+        <div class="dossier-box-val" style="font-size: 0.85rem;">${member.email}</div>
+        <div style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary);">${member.phone}</div>
+      </div>
+    </div>
+
+    <div class="dossier-box" style="margin-top: 0.25rem;">
+      <div class="dossier-box-label">Registered Renewable Portfolio & Capacity</div>
+      <div class="dossier-box-val" style="color: var(--primary); font-size: 0.95rem;">
+        ⚡ ${member.capacity || '10+ MW Solar / Renewable Clean Energy Infrastructure'}
+      </div>
+      <div style="font-size: 0.78rem; color: var(--ink-secondary); margin-top: 4px;">
+        Key Assets: ${member.projects || 'Commercial Solar Parks, Rooftop EPC Installations and Grid Interconnection Systems'}
+      </div>
+    </div>
+
+    <div style="background: var(--gold-light); border: 1px solid var(--gold-border); border-radius: 8px; padding: 0.85rem 1rem; display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+      <div>
+        <div style="font-size: 0.78rem; font-weight: 700; color: var(--gold-dark); text-transform: uppercase;">BSREA Secretariat Accreditation</div>
+        <div style="font-size: 0.75rem; color: var(--ink-secondary);">Valid Membership Term: ${member.registered} through ${member.renewal}</div>
+      </div>
+      <button type="button" class="btn btn-gold" style="padding: 0.4rem 0.85rem; font-size: 0.78rem;" onclick="alert('Downloading Certified Membership Dossier for ' + '${member.name}')">
+        📜 Export Dossier
+      </button>
+    </div>
+  `;
+
+  modal.classList.add('active');
+}
+
+function closeDossierModal() {
+  const modal = document.getElementById('dossierModal');
+  if (modal) modal.classList.remove('active');
 }
 
 // Function: Render Admin Backoffice Table
@@ -277,7 +515,6 @@ function approveMember(id) {
   }
 }
 
-// Function: Reject Member
 function rejectMember(id) {
   const member = membersData.find(m => m.id === id);
   if (member) {
@@ -291,7 +528,6 @@ function rejectMember(id) {
   }
 }
 
-// Function: Open Detailed Manage Modal
 function openManageModal(id) {
   const member = membersData.find(m => m.id === id);
   if (!member) return;
@@ -321,7 +557,6 @@ function closeManageModal() {
   if (modal) modal.classList.remove('active');
 }
 
-// Function: Save Managed Member Changes
 function handleManageSave(e) {
   e.preventDefault();
   const id = parseInt(document.getElementById('mngId').value, 10);
@@ -347,7 +582,6 @@ function handleManageSave(e) {
   alert(`Member record [${member.code} - ${member.name}] updated successfully!`);
 }
 
-// Function: Delete Member Record from Manage Modal
 function deleteMemberRecord() {
   const id = parseInt(document.getElementById('mngId').value, 10);
   const member = membersData.find(m => m.id === id);
@@ -363,7 +597,6 @@ function deleteMemberRecord() {
   }
 }
 
-// Function: Handle Member Registration Form
 function handleRegister(e) {
   e.preventDefault();
 
@@ -398,6 +631,10 @@ function handleRegister(e) {
     email: email,
     phone: phone,
     address: address || 'Gulshan / Dhaka, Bangladesh',
+    region: 'Dhaka',
+    tinBin: `BIN-${Math.floor(100000000 + Math.random() * 900000000)}-0101`,
+    capacity: 'Clean Energy & Renewable Projects',
+    projects: 'Accredited Renewable Installations',
     registered: today,
     renewal: nextYear,
     feeStatus: 'Due',
@@ -426,7 +663,6 @@ function handleRegister(e) {
     }).catch(() => {});
   } catch(e) {}
 
-  // Reset form
   const form = document.getElementById('regForm');
   if (form) form.reset();
 
@@ -434,7 +670,7 @@ function handleRegister(e) {
   renderDirectory();
   renderAdmin();
 
-  alert(`Application Submitted Successfully!\n\nRegistration Code: ${randCode}\nCompany: ${orgName}\n\nYour application has been received and is now pending Secretariat review in the Admin Dashboard.`);
+  alert(`Enterprise Application Received!\n\nRegistration Code: ${randCode}\nEntity: ${orgName}\n\nYour membership application has been submitted to the BSREA Secretariat for KYC review.`);
 }
 
 function openRegisterModal() {
@@ -447,7 +683,7 @@ function closeRegisterModal() {
   if (modal) modal.classList.remove('active');
 }
 
-// Event Listeners
+// Event Listeners on DOM Load
 document.addEventListener('DOMContentLoaded', () => {
   // Public directory search
   const searchInput = document.getElementById('searchInput');
@@ -491,11 +727,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const dossierModal = document.getElementById('dossierModal');
+  if (dossierModal) {
+    dossierModal.addEventListener('click', (e) => {
+      if (e.target === dossierModal) closeDossierModal();
+    });
+  }
+
   // Close modals on pressing Escape
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeRegisterModal();
       closeManageModal();
+      closeDossierModal();
     }
   });
 
@@ -503,7 +747,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderDirectory();
   renderAdmin();
 
-  // Background sync from MongoDB Atlas API (when running with server / Vercel)
+  // Background sync from MongoDB Atlas API (when live on Vercel/Netlify)
   try {
     fetch('/api/members')
       .then(res => res.ok ? res.json() : null)

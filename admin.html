@@ -7,9 +7,19 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+  <!-- Institutional Top Bar -->
+  <div class="gov-top-bar">
+    <div>
+      <span>BSREA SECRETARIAT BACKOFFICE ADMINISTRATION &bull; IT OFFICER CONSOLE</span>
+    </div>
+    <div>
+      <span>AUTHORIZED ACCESS ONLY &bull; SECURE SESSION</span>
+    </div>
+  </div>
 
   <!-- Header -->
   <header>
@@ -17,13 +27,13 @@
       <div class="brand">
         <div class="brand-emblem">BS</div>
         <div class="brand-text">
-          <h1>BSREA ADMINISTRATIVE MEMBERSHIP ENGINE</h1>
-          <p>Secretariat Backoffice & Member Registry &bull; IT Officer Console</p>
+          <h1>BSREA ADMINISTRATIVE BACKOFFICE</h1>
+          <p>Secretariat Member Management Engine &bull; IT Officer Operations</p>
         </div>
       </div>
       <div class="nav-links">
         <a href="index.html" class="nav-link">Public Directory</a>
-        <a href="admin.html" class="nav-link active">Admin Dashboard</a>
+        <a href="admin.html" class="nav-link active">Admin Console</a>
         <a href="https://mhmithun.github.io/Digital-NOC-QR-Verification-Portal/" class="btn btn-secondary" target="_blank" rel="noopener">
           <span>QR Verification Portal ↗</span>
         </a>
@@ -89,10 +99,10 @@
   <div id="manageModal" class="modal-backdrop">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--primary-dark);">
-          Manage Member Record: <span id="mngCode" style="font-family: var(--font-mono); color: var(--primary);"></span>
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff;">
+          Manage Member Record: <span id="mngCode" style="font-family: var(--font-mono); color: #f0d59e;"></span>
         </h3>
-        <button type="button" onclick="closeManageModal()" style="border: none; background: none; font-size: 1.35rem; cursor: pointer; color: var(--ink-secondary); line-height: 1;">&times;</button>
+        <button type="button" class="modal-header-close" onclick="closeManageModal()">&times;</button>
       </div>
       <form id="manageForm">
         <input type="hidden" id="mngId">
