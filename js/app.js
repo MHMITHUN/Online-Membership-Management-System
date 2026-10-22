@@ -217,6 +217,29 @@ function getFilteredAndSortedMembers() {
   const activeMembers = membersData.filter(m => m.status === 'Active');
 
   let result = activeMembers.filter(m => {
+    const s = (currentSearch || '').trim().toLowerCase();
+    const cleanSearchCode = s.replace(/[^a-z0-9]/g, '');
+
+    const nameLower = (m.name || '').toLowerCase();
+    const codeLower = (m.code || '').toLowerCase();
+    const cleanCode = codeLower.replace(/[^a-z0-9]/g, '');
+    const addressLower = (m.address || '').toLowerCase();
+    const personLower = (m.person || '').toLowerCase();
+
+    const matchSearch = !s ||
+                        nameLower.includes(s) ||
+                        codeLower.includes(s) ||
+                        (cleanSearchCode.length >= 2 && cleanCode.includes(cleanSearchCode)) ||
+                        addressLower.includes(s) ||
+                        personLower.includes(s);
+
+    if (!matchSearch) return false;
+
+    // If user typed a search query matching this member's code or name specifically, show it immediately
+    if (s && (codeLower.includes(s) || (cleanSearchCode.length >= 2 && cleanCode.includes(cleanSearchCode)) || nameLower.includes(s))) {
+      return true;
+    }
+
     // Sector filter
     const matchSector = currentSector === 'All' || m.sector === currentSector;
     // Tier filter
@@ -224,16 +247,9 @@ function getFilteredAndSortedMembers() {
     // Region filter
     const matchRegion = currentRegion === 'All' || 
                         (m.region && m.region.toLowerCase().includes(currentRegion.toLowerCase())) ||
-                        (m.address && m.address.toLowerCase().includes(currentRegion.toLowerCase()));
-    // Search query
-    const s = currentSearch.toLowerCase();
-    const matchSearch = !s ||
-                        (m.name || '').toLowerCase().includes(s) ||
-                        (m.code || '').toLowerCase().includes(s) ||
-                        (m.address || '').toLowerCase().includes(s) ||
-                        (m.person || '').toLowerCase().includes(s);
+                        (addressLower.includes(currentRegion.toLowerCase()));
 
-    return matchSector && matchTier && matchRegion && matchSearch;
+    return matchSector && matchTier && matchRegion;
   });
 
   // Sorting
