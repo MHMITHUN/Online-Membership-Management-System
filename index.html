@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BSREA Digital Member Directory & Membership Portal</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-emblem">BS</div>
+        <div class="brand-text">
+          <h1>BSREA DIGITAL MEMBER DIRECTORY</h1>
+          <p>Bangladesh Sustainable and Renewable Energy Association</p>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active">Public Directory</a>
+        <a href="admin.html" class="nav-link">Admin Dashboard</a>
+        <button class="btn btn-primary" onclick="openRegisterModal()">
+          <span>+ Apply for Membership</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="directory-hero">
+      <h2>National Renewable Energy Industry Directory</h2>
+      <p>
+        Official searchable directory of renewable energy developers, manufacturers, EPC contractors, and service providers registered under BSREA.
+      </p>
+    </section>
+
+    <!-- Filter & Search Card -->
+    <section class="filter-card">
+      <div class="search-row">
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Search member company, representative, membership ID, or location..."
+        >
+        <span id="resultCount" style="align-self: center; font-size: 0.8rem; font-family: var(--font-mono); color: var(--ink-secondary);">
+          Showing 6 Active Members
+        </span>
+      </div>
+
+      <!-- Sector Pills -->
+      <div class="sector-pills">
+        <button class="sector-btn active" data-sector="All">All Sectors</button>
+        <button class="sector-btn" data-sector="Solar Energy">Solar Energy (PV / Rooftop)</button>
+        <button class="sector-btn" data-sector="Wind Energy">Wind Energy</button>
+        <button class="sector-btn" data-sector="Biomass & Biofuel">Biomass & Biofuel</button>
+        <button class="sector-btn" data-sector="Energy Efficiency">Energy Efficiency</button>
+        <button class="sector-btn" data-sector="Hydro & Microgrid">Hydro & Microgrid</button>
+      </div>
+    </section>
+
+    <!-- Members Grid -->
+    <section id="membersGrid" class="members-grid">
+      <!-- Populated dynamically by app.js -->
+    </section>
+  </main>
+
+  <!-- Registration Modal -->
+  <div id="regModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--primary-dark);">Apply for BSREA Membership</h3>
+        <button type="button" onclick="closeRegisterModal()" style="border: none; background: none; font-size: 1.25rem; cursor: pointer; color: var(--ink-secondary);">&times;</button>
+      </div>
+      <form id="regForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="regOrg">Company / Organization Name *</label>
+            <input type="text" id="regOrg" placeholder="e.g. Bengal Green Energy Ltd." required>
+          </div>
+          <div class="form-group">
+            <label for="regType">Membership Tier *</label>
+            <select id="regType">
+              <option value="Corporate Member">Corporate Member</option>
+              <option value="Associate Member">Associate Member</option>
+              <option value="Institutional Member">Institutional Member</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="regSector">Renewable Sector *</label>
+            <select id="regSector">
+              <option value="Solar Energy">Solar Energy</option>
+              <option value="Wind Energy">Wind Energy</option>
+              <option value="Biomass & Biofuel">Biomass & Biofuel</option>
+              <option value="Energy Efficiency">Energy Efficiency</option>
+              <option value="Hydro & Microgrid">Hydro & Microgrid</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="regPerson">Authorized Representative Name *</label>
+            <input type="text" id="regPerson" placeholder="e.g. Tanvir Hossain" required>
+          </div>
+          <div class="form-group">
+            <label for="regDesig">Designation</label>
+            <input type="text" id="regDesig" placeholder="e.g. Managing Director">
+          </div>
+          <div class="form-group">
+            <label for="regEmail">Corporate Email *</label>
+            <input type="email" id="regEmail" placeholder="e.g. info@company.com" required>
+          </div>
+          <div class="form-group">
+            <label for="regPhone">Contact Phone *</label>
+            <input type="tel" id="regPhone" placeholder="e.g. +880 1711 000000" required>
+          </div>
+          <div class="form-group">
+            <label for="regAddress">Registered Office Address</label>
+            <textarea id="regAddress" rows="2" placeholder="e.g. House-12, Road-5, Gulshan-2, Dhaka"></textarea>
+          </div>
+        </div>
+        <div style="padding: 1rem 1.5rem; background: #f9fafb; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeRegisterModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer style="margin-top: 4rem; padding: 2rem; text-align: center; font-size: 0.8rem; color: var(--ink-secondary); border-top: 1px solid var(--border); background: #fff;">
+    <p>BSREA Online Membership Management System &bull; Developed by <strong>MD. Mahamudul Hasan</strong> (IT Officer Candidate)</p>
+    <p style="margin-top: 0.3rem; font-family: var(--font-mono); font-size: 0.75rem;">Tech Stack: PHP 8.2 &bull; MySQL Relational DB &bull; JavaScript ES6+ &bull; RESTful Directory API</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
