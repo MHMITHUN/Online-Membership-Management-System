@@ -1,0 +1,12 @@
+{
+  "name": "online-membership-management-system",
+  "version": "1.0.0",
+  "description": "BSREA Online Membership Management System & Digital Member Directory",
+  "main": "index.html",
+  "scripts": {
+    "start": "node api/server.js"
+  },
+  "dependencies": {
+    "mongodb": "^6.12.0"
+  }
+}
