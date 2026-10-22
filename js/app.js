@@ -251,7 +251,6 @@ function renderAdmin() {
   }).join('');
 }
 
-// Function: Approve Member
 function approveMember(id) {
   const member = membersData.find(m => m.id === id);
   if (member) {
@@ -260,6 +259,20 @@ function approveMember(id) {
     saveMembers(membersData);
     renderAdmin();
     renderDirectory();
+
+    // Sync to MongoDB Atlas API in background
+    try {
+      fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update_status',
+          memberCode: member.code,
+          newStatus: 'Active'
+        })
+      }).catch(() => {});
+    } catch(e) {}
+
     alert(`Success: [${member.name}] has been approved and is now active in the public directory!`);
   }
 }
@@ -394,6 +407,25 @@ function handleRegister(e) {
   membersData.unshift(newMember);
   saveMembers(membersData);
 
+  // Sync to MongoDB Atlas API in background
+  try {
+    fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'register',
+        orgName,
+        type,
+        sector,
+        person,
+        designation: desig || 'Representative',
+        email,
+        phone,
+        address
+      })
+    }).catch(() => {});
+  } catch(e) {}
+
   // Reset form
   const form = document.getElementById('regForm');
   if (form) form.reset();
@@ -470,4 +502,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial Renders
   renderDirectory();
   renderAdmin();
+
+  // Background sync from MongoDB Atlas API (when running with server / Vercel)
+  try {
+    fetch('/api/members')
+      .then(res => res.ok ? res.json() : null)
+      .then(json => {
+        if (json && json.data && Array.isArray(json.data) && json.data.length > 0) {
+          saveMembers(json.data);
+          renderDirectory();
+          renderAdmin();
+        }
+      })
+      .catch(() => {});
+  } catch(e) {}
 });
